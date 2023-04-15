@@ -5,7 +5,7 @@ import {
 	QueryClientProvider,
 	useQuery,
 } from "@tanstack/react-query";
-// import { ReactQueryDevtools } from "@tanstack/react-query-devtools/build/lib/devtools";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { useState } from "react";
 
 const queryClient = new QueryClient();
@@ -17,9 +17,9 @@ class AffiliationRow extends React.Component {
 }
 
 function GetNewCharacter() {
-	const [characterId, setCharacterId] = useState(1);
+	const [characterId, setCharacterId] = useState();
 	function handleClick() {
-		setCharacterId(Math.round(Math.random() * 88));
+		setCharacterId(Math.ceil(Math.random() * 88));
 	}
 	const { status, error, data, isFetching } = useQuery({
 		queryKey: ["character", characterId],
@@ -33,16 +33,33 @@ function GetNewCharacter() {
 						height: data.height,
 						homeworld: data.homeworld,
 						affiliations: data.affiliations,
-						loadedCharacter: true,
 					};
 				}),
+		enabled: characterId > 0,
 	});
+
+	if (characterId === undefined)
+		return (
+			<div>
+				<button type="button" onClick={handleClick} className="btn">
+					Randomize Character
+				</button>
+			</div>
+		);
 
 	if (isFetching) return "Accessing Galactic Republic records...";
 
 	if (status === "loading") return "Loading Galactic Republic records...";
 
-	if (status === "error") return `An error has occurred: ${error.message}`;
+	if (status === "error")
+		return (
+			<div>
+				<p>`An error has occurred: ${error.message}`</p>
+				<button type="button" onClick={handleClick} className="btn">
+					Randomize Character
+				</button>
+			</div>
+		);
 
 	console.info({ data, error, body: data.body });
 
@@ -53,10 +70,10 @@ function GetNewCharacter() {
 	return (
 		<div>
 			<div>
-				<img src={data.image} alt="character headshot"></img>
 				<h1>{data.name}</h1>
-				<p>{data.height} m</p>
+				<img src={data.image} alt="character headshot"></img>
 				<p>Homeworld: {data.homeworld}</p>
+				<p>{data.height} m</p>
 				<h2>Affiliations</h2>
 				<ul>{groups}</ul>
 			</div>
@@ -76,7 +93,7 @@ function App() {
 					<GetNewCharacter />
 				</header>
 			</div>
-			{/* <ReactQueryDevtools initialIsOpen /> */}
+			<ReactQueryDevtools initialIsOpen />
 		</QueryClientProvider>
 	);
 }
