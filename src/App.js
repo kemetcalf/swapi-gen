@@ -31,6 +31,7 @@ function GetNewCharacter() {
 						image: data.image,
 						name: data.name,
 						height: data.height,
+						species: data.species,
 						homeworld: data.homeworld,
 						affiliations: data.affiliations,
 					};
@@ -63,6 +64,23 @@ function GetNewCharacter() {
 
 	console.info({ data, error, body: data.body });
 
+	function heightInFeet(height) {
+		const metersToFeet = height * 3.28084;
+		const wholeFeet = Math.floor(metersToFeet) + " feet";
+		const remainderInIn = " " + Math.floor((metersToFeet % 1) * 12) + " inches";
+		return wholeFeet + remainderInIn;
+	}
+
+	function firstLetterToUpper(string) {
+		const word = string;
+		const firstLetter = word.charAt(0);
+		const firstLetterCap = firstLetter.toUpperCase();
+		const remainingLetters = word.slice(1);
+		const capitalizedWord = firstLetterCap + remainingLetters;
+
+		return capitalizedWord;
+	}
+
 	const groups = data.affiliations.map((group, i) => {
 		return <AffiliationRow key={i} organization={group} />;
 	});
@@ -73,7 +91,8 @@ function GetNewCharacter() {
 				<h1>{data.name}</h1>
 				<img src={data.image} alt="character headshot"></img>
 				<p>Homeworld: {data.homeworld}</p>
-				<p>{data.height} m</p>
+				<p>Species: {data.species}</p>
+				<p>Height: {heightInFeet(data.height)}</p>
 				<h2>Affiliations</h2>
 				<ul>{groups}</ul>
 			</div>
