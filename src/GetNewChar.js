@@ -39,13 +39,21 @@ export default function GetNewCharacter() {
 			</div>
 		);
 
-	if (isFetching) return "Accessing Galactic Republic records...";
+	if (isFetching)
+		return (
+			<div className="flex flex-col h-screen place-items-center place-content-center">
+				"Accessing Galactic Republic records..."
+			</div>
+		);
 
-	if (status === "loading") return "Loading Galactic Republic records...";
+	if (status === "loading") return;
+	<div className="flex flex-col h-screen place-items-center place-content-center">
+		"Loading Galactic Republic records..."
+	</div>;
 
 	if (status === "error")
 		return (
-			<div>
+			<div className="flex flex-col h-screen place-items-center place-content-center">
 				<p>`An error has occurred: ${error.message}`</p>
 				<MainButton getId={handleClick} />
 			</div>
@@ -62,12 +70,17 @@ export default function GetNewCharacter() {
 
 	function firstLetterToUpper(string) {
 		const word = string;
-		const firstLetter = word.charAt(0);
-		const firstLetterCap = firstLetter.toUpperCase();
-		const remainingLetters = word.slice(1);
-		const capitalizedWord = firstLetterCap + remainingLetters;
 
-		return capitalizedWord;
+		if (typeof word === "string") {
+			const firstLetter = word.charAt(0);
+			const firstLetterCap = firstLetter.toUpperCase();
+			const remainingLetters = word.slice(1);
+			const capitalizedWord = firstLetterCap + remainingLetters;
+
+			return capitalizedWord;
+		} else {
+			return "N/A";
+		}
 	}
 
 	const groups = data.affiliations.map((group, i) => {
@@ -75,32 +88,42 @@ export default function GetNewCharacter() {
 	});
 
 	return (
-		<div className="h-screen bg-accent p-8">
-			<div className="card lg:card-side bg-base-100 shadow-xl max-h-min">
-				<figure className="max-w-sm">
-					<img
-						src={data.image}
-						alt="character headshot"
-						className="mask mask-squircle shadow-2xl"
-					/>
+		<div className="h-screen bg-accent p-8 flex flex-col place-items-center">
+			<div className="card lg:card-side bg-base-100 shadow-2xl h-5/6 w-5/6 p-8">
+				<figure className="avatar max-w-lg lg:max-w-md  p-8">
+					<div id="avatar" className="rounded-xl my-8">
+						<img
+							src={data.image}
+							alt="character headshot"
+							className="object-none object-top"
+						/>
+					</div>
 				</figure>
-				<div className="card-body w-3/5">
-					<div className="flex-row">
-						<div className="place-content-center">
-							<h3 className="text-xl font-bold mt-6">Homeworld: </h3>
+				<div className="card-body">
+					<h1 className="text-5xl font-bold text-secondary ">{data.name}</h1>
+					<div className="divider my-2" />
+					<div className="grid grid-cols-2 gap-x-4">
+						<div className="">
+							<h3 className="text-xl font-bold">Homeworld: </h3>
 							<p>{firstLetterToUpper(data.homeworld)}</p>
-							<p>Species: {firstLetterToUpper(data.species)}</p>
-							<p>Height: {heightInFeet(data.height)}</p>
-							<div className="divider divider-horizontal " />
-							<h2 className="text-2xl font-bold mt-6">Affiliations</h2>
-							<div>
+							<h3 className="text-xl font-bold mt-4">Species: </h3>
+							<p>{firstLetterToUpper(data.species)}</p>
+							<h3 className="text-xl font-bold mt-4">Height: </h3>
+							<p>{heightInFeet(data.height)}</p>
+						</div>
+
+						<div className="">
+							<h3 className="text-xl font-bold">Affiliations</h3>
+							<div className="h-80 overflow-auto">
 								<ul>{groups}</ul>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-			<MainButton getId={handleClick} className="" />
+			<div className="m-6">
+				<MainButton getId={handleClick} className="m-6" />
+			</div>
 		</div>
 	);
 }

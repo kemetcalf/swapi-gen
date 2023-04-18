@@ -4,7 +4,7 @@ export default function MainButton(props) {
 		<button
 			type="button"
 			onClick={handleClick}
-			className="btn btn-primary w-1/5 "
+			className="btn btn-primary shadow-xl w-1/5 min-w-fit"
 		>
 			Randomize Character
 		</button>
