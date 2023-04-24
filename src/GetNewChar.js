@@ -117,7 +117,7 @@ export default function GetNewCharacter() {
 						<div className="h-80">
 							<h3 className="h-1/6">Affiliations</h3>
 							<div className="h-3/4 overflow-auto">
-								<ul>{groups}</ul>
+								<ul className="list-outside list-disc">{groups}</ul>
 							</div>
 						</div>
 					</div>
