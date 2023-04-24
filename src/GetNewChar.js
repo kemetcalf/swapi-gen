@@ -89,8 +89,8 @@ export default function GetNewCharacter() {
 
 	return (
 		<div className="h-screen bg-accent p-8 flex flex-col place-items-center">
-			<div className="card lg:card-side bg-base-100 shadow-2xl h-5/6 w-5/6 p-8">
-				<figure className="avatar max-w-lg lg:max-w-md  p-8">
+			<div className="card lg:card-side bg-base-100 shadow-2xl h-5/6 w-11/12 p-8">
+				<figure className="avatar max-w-lg lg:max-w-md min-h-fit p-8">
 					<div id="avatar" className="rounded-xl my-8">
 						<img
 							src={data.image}
@@ -100,21 +100,23 @@ export default function GetNewCharacter() {
 					</div>
 				</figure>
 				<div className="card-body">
-					<h1 className="text-5xl font-bold text-secondary ">{data.name}</h1>
+					<h1 className="text-5xl lg:text-7xl font-bold text-secondary ">
+						{data.name}
+					</h1>
 					<div className="divider my-2" />
-					<div className="grid grid-cols-2 gap-x-4">
-						<div className="">
-							<h3 className="text-xl font-bold">Homeworld: </h3>
+					<div className="grid grid-cols-2 gap-x-4 ">
+						<div>
+							<h3>Homeworld: </h3>
 							<p>{firstLetterToUpper(data.homeworld)}</p>
-							<h3 className="text-xl font-bold mt-4">Species: </h3>
+							<h3 className="mt-4">Species: </h3>
 							<p>{firstLetterToUpper(data.species)}</p>
-							<h3 className="text-xl font-bold mt-4">Height: </h3>
+							<h3 className="mt-4">Height: </h3>
 							<p>{heightInFeet(data.height)}</p>
 						</div>
 
-						<div className="">
-							<h3 className="text-xl font-bold">Affiliations</h3>
-							<div className="h-80 overflow-auto">
+						<div className="h-80">
+							<h3 className="h-1/6">Affiliations</h3>
+							<div className="h-3/4 overflow-auto">
 								<ul>{groups}</ul>
 							</div>
 						</div>
